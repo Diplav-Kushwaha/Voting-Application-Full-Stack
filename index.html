@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voting Application</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4 mb-3">Available Polls</h1>
+    <ul class="list-group">
+        <th:block th:if="${not #lists.isEmpty(polls)}">
+            <li th:each="poll : ${polls}" class="list-group-item">
+                <h5 th:text="${poll.question}"></h5>
+                <div class="row">
+                    <div class="col-sm-2 mt-2">
+                        <a th:href="@{/poll/{id}(id=${poll.id})}" class="btn btn-success">submit Vote</a>
+                    </div>
+                    <div class="col-sm-2 mt-2">
+                        <a th:href="@{/poll/{id}/results(id=${poll.id})}" class="btn btn-warning">View Results</a>
+                    </div>
+                </div>
+            </li>
+        </th:block>
+        <th:block th:if="${#lists.isEmpty(polls)}">
+            <li class="list-group-item">No Polls Available</li>
+        </th:block>
+    </ul>
+    <h2 class="mt-1 mb-3">Create New Poll</h2>
+    <form id="createPollForm" th:action="@{/api/poll}" method="post">
+        <div class="form-group row">
+            <label for="question" class="col-sm-2 col-form-label">Question:</label>
+            <div class="col-sm-10">
+                <input type="text" id="question" name="question" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="option" class="col-sm-2 col-form-label">Options</label>
+            <div class="col-sm-7">
+                <div id="optionContainer">
+                    <input type="text" name="option" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary btn-block mt-2" onclick="addOption()">Add Option</button>
+            </div>
+            <div class="col-md-10">
+                <button type="submit" class="btn btn-danger btn-block mt-2">Create Poll</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></script>
+<script type="text/javascript">
+    function addOption() {
+        var optionContainer = document.getElementById('optionContainer');
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'option'; // same name as original
+        input.className = 'form-control mt-2';
+        input.required = true;
+        optionContainer.appendChild(input);
+    }
+</script>
+</body>
+</html>
