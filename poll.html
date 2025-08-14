@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:to="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title to:text="${poll.question}">Poll</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title th:text="${poll.question}">Poll</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="container">
-    <h2 class="mt-4 mb-3" text="${poll.question}"></h2>
-    <form th:action="@{/api/vote}" method="post">
-        <input type="hidden" name="pollId" th:value="${poll.id}">
-        <div class="form-group">
-            <label for="options">Options: </label>
-            <select id="options" name="optionId" class="form-control">
-                <option th:each="option : ${poll.voteOptionsList}"
-                        th:value="${option.id}"
-                        th:text="${option.desc}"></option>
-            </select>
+<body class="bg-light">
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title text-primary mb-4" th:text="${poll.question}"></h2>
+            <form th:action="@{/api/vote}" method="post">
+                <input type="hidden" name="pollId" th:value="${poll.id}">
+                <div class="mb-3">
+                    <label for="options" class="form-label fw-semibold">Options:</label>
+                    <select id="options" name="optionId" class="form-select">
+                        <option th:each="option : ${poll.voteOptionsList}"
+                                th:value="${option.id}"
+                                th:text="${option.desc}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">Vote</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-primary">Vote</button>
-    </form>
+    </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
